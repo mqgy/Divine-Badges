@@ -1,0 +1,49 @@
+badges:
+  ice:
+    name: "&3Ice Badge"
+    material: "PACKED_ICE"
+    lore:
+      - "&7Awarded for beating the Ice Gym."
+    slot: 0
+  fire:
+    name: "&cFire Badge"
+    material: "MAGMA_BLOCK"
+    lore:
+      - "&7Awarded for beating the Fire Gym."
+    slot: 1
+  grass:
+    name: "&aGrass Badge"
+    material: "OAK_LEAVES"
+    lore:
+      - "&7Awarded for beating the Grass Gym."
+    slot: 2
+  electric:
+    name: "&eElectric Badge"
+    material: "GLOWSTONE"
+    lore:
+      - "&7Awarded for beating the Electric Gym."
+    slot: 3
+  water:
+    name: "&9Water Badge"
+    material: "PRISMARINE"
+    lore:
+      - "&7Awarded for beating the Water Gym."
+    slot: 4
+  rock:
+    name: "&8Rock Badge"
+    material: "STONE"
+    lore:
+      - "&7Awarded for beating the Rock Gym."
+    slot: 5
+  psychic:
+    name: "&dPsychic Badge"
+    material: "AMETHYST_BLOCK"
+    lore:
+      - "&7Awarded for beating the Psychic Gym."
+    slot: 6
+  dragon:
+    name: "&5Dragon Badge"
+    material: "DRAGON_EGG"
+    lore:
+      - "&7Awarded for beating the Dragon Gym."
+    slot: 7

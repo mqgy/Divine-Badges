@@ -1,18 +1,25 @@
-#
-# This is the file your server opens to find the main class of your 
-# plugin and its information. We automatically replace variables here 
-# from your pom.xml file. YOU GENERALLY DO NOT NEED TO EDIT THIS.
-#
-# See https://www.spigotmc.org/wiki/plugin-yml/ for more information.
-# 
-name: ${project.name} 
+name: DivineBadges
 version: ${project.version}
-main: ${main.class}
-author: ${author}
-# DO NOT EDIT. This api-version is used for maximum backward compatibility.
-api-version: 1.13
-# Plugins that we support so that we are loaded after them for your convenience.
-softdepend: [AuthMe, BanManager, BungeeChatAPI, CMI, DiscordSRV, Factions, Feudal, ItemsAdder, Essentials, LegacyFactions, Lands, LuckPerms, Multiverse-Core, MVdWPlaceholderAPI, MythicMobs, mcMMO, Nicky, PlaceholderAPI, ProtocolLib, SimpleClans, Towny, TownyChat, Vault, WorldEdit]
-# The commands are built at runtime so you can change them easily within the settings.
-# Do not change anything in here, you will break the plugin and get no support.
-commands:  
+main: dev.mqgy.divinebadges.DivineBadges
+author: mqgy
+api-version: '1.21'
+description: A gym badge system for Cobblemon servers - player-run gyms with virtual badge awards.
+
+commands:
+  badges:
+    description: Opens your badge achievement menu
+    usage: /badges
+  badge:
+    description: Admin badge management
+    usage: /badge <create|delete|list|give|revoke|setleader|removeleader>
+
+permissions:
+  divinebadges.admin:
+    description: Access to all admin badge commands
+    default: op
+  divinebadges.leader:
+    description: Allows a player to award badges for their assigned gym
+    default: false
+  divinebadges.badges:
+    description: Allows a player to view their badge collection
+    default: true

@@ -1,79 +1,53 @@
 package dev.mqgy.divinebadges;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.mineacademy.fo.plugin.SimplePlugin;
+import dev.mqgy.divinebadges.command.BadgeCommand;
+import dev.mqgy.divinebadges.command.BadgesCommand;
+import dev.mqgy.divinebadges.listener.MenuListener;
+import dev.mqgy.divinebadges.manager.BadgeManager;
+import dev.mqgy.divinebadges.manager.PlayerDataManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * PluginTemplate is a simple template you can use every time you make
- * a new plugin. This will save you time because you no longer have to
- * recreate the same skeleton and features each time.
- *
- * It uses Foundation for fast and efficient development process.
- */
-public final class PluginTemplate extends SimplePlugin {
+public final class DivineBadges extends JavaPlugin {
 
-	/**
-	* Automatically perform login ONCE when the plugin starts.
-	*/
+	private static DivineBadges instance;
+	private BadgeManager badgeManager;
+	private PlayerDataManager playerDataManager;
+
 	@Override
-	protected void onPluginStart() {
-	}
+	public void onEnable() {
+		instance = this;
+		saveResource("badges.yml", false);
 
-	/**
-	 * Automatically perform login when the plugin starts and each time it is reloaded.
-	 */
-	@Override
-	protected void onReloadablesStart() {
+		badgeManager = new BadgeManager(this);
+		badgeManager.loadBadges();
 
-		// You can check for necessary plugins and disable loading if they are missing
-		//Valid.checkBoolean(HookManager.isVaultLoaded(), "You need to install Vault so that we can work with packets, offline player data, prefixes and groups.");
+		playerDataManager = new PlayerDataManager(this);
+		playerDataManager.loadAllData();
 
-		// Uncomment to load variables
-		// Variable.loadVariables();
+		BadgeCommand badgeCmd = new BadgeCommand(this);
+		getCommand("badges").setExecutor(new BadgesCommand(this));
+		getCommand("badge").setExecutor(badgeCmd);
+		getCommand("badge").setTabCompleter(badgeCmd);
 
-		//
-		// Add your own plugin parts to load automatically here
-		// Please see @AutoRegister for parts you do not have to register manually
-		//
+		getServer().getPluginManager().registerEvents(new MenuListener(this), this);
+		getLogger().info("DivineBadges enabled! " + badgeManager.getBadges().size() + " badges loaded.");
 	}
 
 	@Override
-	protected void onPluginPreReload() {
-
-		// Close your database here if you use one
-		//YourDatabase.getInstance().close();
+	public void onDisable() {
+		if (playerDataManager != null)
+			playerDataManager.saveAllData();
 	}
 
-	/* ------------------------------------------------------------------------------- */
-	/* Events */
-	/* ------------------------------------------------------------------------------- */
-
-	/**
-	 * An example event that checks if the right clicked entity is a cow, and makes an explosion.
-	 * You can write your events to your main class without having to register a listener.
-	 *
-	 * @param event
-	 */
-	@EventHandler
-	public void onRightClick(final PlayerInteractEntityEvent event) {
-		if (event.getRightClicked().getType() == EntityType.COW)
-			event.getRightClicked().getWorld().createExplosion(event.getRightClicked().getLocation(), 5);
+	public static DivineBadges getInstance() {
+		return instance;
 	}
 
-	/* ------------------------------------------------------------------------------- */
-	/* Static */
-	/* ------------------------------------------------------------------------------- */
+	public BadgeManager getBadgeManager() {
+		return badgeManager;
+	}
 
-	/**
-	 * Return the instance of this plugin, which simply refers to a static
-	 * field already created for you in SimplePlugin but casts it to your
-	 * specific plugin instance for your convenience.
-	 *
-	 * @return
-	 */
-	public static PluginTemplate getInstance() {
-		return (PluginTemplate) SimplePlugin.getInstance();
+	public PlayerDataManager getPlayerDataManager() {
+		return playerDataManager;
 	}
 }
