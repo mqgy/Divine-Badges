@@ -9,6 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.enchantments.Enchantment;
+
 
 import java.util.*;
 
@@ -92,6 +95,8 @@ public class BadgeCollectionMenu implements InventoryHolder {
                 lore.add("");
                 lore.add(colorize("&a✔ Earned!"));
                 meta.setLore(lore);
+                meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 item.setItemMeta(meta);
             } else {
                 item = new ItemStack(Material.GRAY_DYE);
