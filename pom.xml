@@ -24,7 +24,7 @@
         <author>kangarko</author>
 
         <!-- Change to the full path where your main plugin class is located. -->
-        <main.class>org.mineacademy.template.PluginTemplate</main.class>
+        <main.class>dev.mqgy.divinebadges.PluginTemplate</main.class>
 
         <!-- Change the Java version this plugin is built on.
 
