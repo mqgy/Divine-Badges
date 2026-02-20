@@ -94,9 +94,9 @@ public class BadgeCollectionMenu implements InventoryHolder {
                 meta.setLore(lore);
                 item.setItemMeta(meta);
             } else {
-                item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+                item = new ItemStack(Material.GRAY_DYE);
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(colorize("&8&l???"));
+                meta.setDisplayName(colorize("&8&l" + badge.getName()));
                 meta.setLore(List.of("", colorize("&7Not earned yet."),
                         colorize("&7Defeat the gym leader!"), "", colorize("&c✘ Not Earned")));
                 item.setItemMeta(meta);
