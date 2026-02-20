@@ -55,7 +55,7 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 4) {
-            sender.sendMessage(colorize(PREFIX + "&cUsage: /badge create <id> <material> <name...>"));
+            sender.sendMessage(colorize(PREFIX + "&cUsage: /badge create <id> <material> &ColourCode<name...>"));
             sender.sendMessage(colorize(PREFIX + "&7Example: /badge create ice PACKED_ICE &3Ice Badge"));
             return;
         }
@@ -286,13 +286,13 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(colorize("&8&m                                                  "));
 
         if (admin) {
-            sender.sendMessage(colorize(" &6/badge create &f<id> <material> <name...> &8- &7Create"));
-            sender.sendMessage(colorize(" &6/badge delete &f<id> &8- &7Delete"));
+            sender.sendMessage(colorize(" &6/badge create &f<id> <material> <name...> &8- &7Create new badges"));
+            sender.sendMessage(colorize(" &6/badge delete &f<id> &8- &7Delete badges"));
             sender.sendMessage(colorize(" &6/badge list &8- &7List all"));
-            sender.sendMessage(colorize(" &6/badge give &f<player> <badge> &8- &7Give badge"));
-            sender.sendMessage(colorize(" &6/badge revoke &f<player> <badge> &8- &7Revoke"));
-            sender.sendMessage(colorize(" &6/badge setleader &f<player> <badge> &8- &7Set leader"));
-            sender.sendMessage(colorize(" &6/badge removeleader &f<player> <badge> &8- &7Remove leader"));
+            sender.sendMessage(colorize(" &6/badge give &f<player> <badge> &8- &7Force give badges"));
+            sender.sendMessage(colorize(" &6/badge revoke &f<player> <badge> &8- &7Revoke badges"));
+            sender.sendMessage(colorize(" &6/badge setleader &f<player> <badge> &8- &7Set gym leader for given badge"));
+            sender.sendMessage(colorize(" &6/badge removeleader &f<player> <badge> &8- &7Remove player as gym leader"));
             sender.sendMessage(colorize(" &6/badge reload &8- &7Reload config"));
         }
         sender.sendMessage(colorize(" &6/badge award &8- &7Award menu (gym leaders)"));
