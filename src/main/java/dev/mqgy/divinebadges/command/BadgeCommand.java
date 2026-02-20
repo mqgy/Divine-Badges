@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.Sound;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -157,6 +158,7 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
         if (plugin.getPlayerDataManager().awardBadge(target.getUniqueId(), id)) {
             sender.sendMessage(colorize(PREFIX + "&aGave " + badge.getName() + " &ato &f" + target.getName()));
             target.sendMessage(colorize(PREFIX + "&aYou received the " + badge.getName() + "&a!"));
+            target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
         } else {
             sender.sendMessage(colorize(PREFIX + "&c" + target.getName() + " already has that."));
         }
