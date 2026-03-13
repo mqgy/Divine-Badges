@@ -26,7 +26,7 @@ public class BadgesCommand implements CommandExecutor {
 
         if (args.length >= 1) {
             if (!player.hasPermission("divinebadges.admin")) {
-                player.sendMessage(colorize("&8[&6DivineBadges&8] &cNo permission."));
+                player.sendMessage(colorize("&cNo permission."));
                 return true;
             }
             Player target = plugin.getServer().getPlayer(args[0]);

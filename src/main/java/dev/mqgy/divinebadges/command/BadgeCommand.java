@@ -2,17 +2,16 @@ package dev.mqgy.divinebadges.command;
 
 import dev.mqgy.divinebadges.DivineBadges;
 import dev.mqgy.divinebadges.gui.BadgeAwardMenu;
-import dev.mqgy.divinebadges.manager.BadgeManager;
-import dev.mqgy.divinebadges.manager.PlayerDataManager;
 import dev.mqgy.divinebadges.model.Badge;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.Sound;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,7 +62,6 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
 
         String id = args[1].toLowerCase();
 
-        // numeric IDs break yaml reload (int vs string key mismatch)
         if (id.matches("\\d+")) {
             sender.sendMessage(colorize(PREFIX + "&cID can't be purely numeric."));
             sender.sendMessage(colorize(PREFIX + "&7Try '&fbadge" + id + "&7' instead."));
@@ -125,10 +123,38 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(colorize("&8&m                                                  "));
 
         for (Badge b : badges.values()) {
-            sender.sendMessage(colorize(" &8▸ &f" + b.getId() + " &8| " + b.getName()
-                    + " &8| &7" + b.getMaterial().name()
-                    + " &8| &7Leaders: &f" + b.getLeaders().size()));
+            String leadersDisplay;
+
+            if (b.getLeaders().isEmpty()) {
+                leadersDisplay = "&cNo Gym Leader";
+            } else {
+                leadersDisplay = b.getLeaders().stream()
+                        .map(uuid -> {
+                            Player online = Bukkit.getPlayer(uuid);
+                            if (online != null)
+                                return online.getName();
+
+                            OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);
+                            String name = offline.getName();
+                            return name != null ? name : uuid.toString();
+                        })
+                        .collect(Collectors.joining("&7, &f"));
+
+                if (leadersDisplay.isEmpty()) {
+                    leadersDisplay = "&cNo Gym Leader";
+                } else {
+                    leadersDisplay = "&f" + leadersDisplay;
+                }
+            }
+
+            sender.sendMessage(colorize(
+                    " &8▸ &f" + b.getId()
+                            + " &8| " + b.getName()
+                            + " &8| &7" + b.getMaterial().name()
+                            + " &8| &7Leaders: " + leadersDisplay
+            ));
         }
+
         sender.sendMessage(colorize("&8&m                                                  "));
     }
 
@@ -320,7 +346,7 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             return switch (sub) {
                 case "delete" -> filter(plugin.getBadgeManager().getBadgeIds(), args[1]);
-                case "give", "revoke", "setleader", "removeleader" -> null; // default player completion
+                case "give", "revoke", "setleader", "removeleader" -> null;
                 case "create" -> List.of("<id>");
                 default -> Collections.emptyList();
             };
@@ -329,10 +355,12 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
         if (args.length == 3) {
             return switch (sub) {
                 case "give", "revoke", "setleader", "removeleader" ->
-                    filter(plugin.getBadgeManager().getBadgeIds(), args[2]);
+                        filter(plugin.getBadgeManager().getBadgeIds(), args[2]);
                 case "create" -> filter(
-                        Arrays.stream(Material.values()).filter(Material::isItem)
-                                .map(Material::name).collect(Collectors.toList()),
+                        Arrays.stream(Material.values())
+                                .filter(Material::isItem)
+                                .map(Material::name)
+                                .collect(Collectors.toList()),
                         args[2]);
                 default -> Collections.emptyList();
             };
@@ -343,6 +371,8 @@ public class BadgeCommand implements CommandExecutor, TabCompleter {
 
     private List<String> filter(List<String> opts, String input) {
         String lower = input.toLowerCase();
-        return opts.stream().filter(s -> s.toLowerCase().startsWith(lower)).collect(Collectors.toList());
+        return opts.stream()
+                .filter(s -> s.toLowerCase().startsWith(lower))
+                .collect(Collectors.toList());
     }
 }
